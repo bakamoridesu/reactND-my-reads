@@ -5,7 +5,7 @@ import * as BooksAPI from './BooksAPI';
 import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
 import {
-  Link, Route,
+  Route,
   BrowserRouter as Router
 
 } from 'react-router-dom'
@@ -17,6 +17,10 @@ class BooksApp extends React.Component {
     books: {}
   }
 
+  /*
+        Performs initial data download from server
+        Updates state (books, shelfByID)
+   */
   componentDidMount() {
     console.log('componentDidMount')
     BooksAPI.getAll().then((res) => {
@@ -38,14 +42,27 @@ class BooksApp extends React.Component {
     })
   }
 
+  /*
+       1. Updates state (books, shelfByID)
+       2. Updates shelf of the book on server
+
+       input: book instance, new shelf name
+   */
   updateBook = (book, newShelf) => {
+    // remember book ID
     const bookID = book.id
+    // get old shelf
     const oldShelf = this.state.shelfByID[bookID]
+    // change shelf of the book that being updated
     book['shelf'] = newShelf
+    // change state
     this.setState((prevState) => {
+      // delete book from the current shelf
       const oldShelfBooks = prevState.books[oldShelf].filter((b) => (
         b.id !== bookID
       ))
+      // add book to the new shelf if new shelf is not None
+      // also update shelf by ID
       const newBooks = prevState.books;
       const newShelfByID = prevState.shelfByID;
       newShelfByID[bookID] = newShelf
@@ -66,14 +83,13 @@ class BooksApp extends React.Component {
     return (
       <Router>
         <div className="app">
+
           <Route path='/search' component={SearchBooks}/>
+
           <Route exact path='/' render={() => (
             <ListBooks books={this.state.books} updateBook={this.updateBook}/>
           )}/>
-          <div className="open-search">
-            <Link
-              to='/search'>Add a book</Link>
-          </div>
+
         </div>
       </Router>
     )
