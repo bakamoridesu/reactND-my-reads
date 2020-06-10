@@ -13,7 +13,7 @@ import {
 
 class BooksApp extends React.Component {
   state = {
-    shelfByID:{},
+    shelfByID: {},
     books: {}
   }
 
@@ -48,35 +48,43 @@ class BooksApp extends React.Component {
 
        input: book instance, new shelf name
    */
-  updateBook = (book, newShelf) => {
+  updateBook = (book, newShelf, oldShelf=null) => {
     // remember book ID
     const bookID = book.id
     // get old shelf
-    const oldShelf = this.state.shelfByID[bookID]
+    if(!oldShelf){
+      oldShelf = this.state.shelfByID[bookID]
+    }
     // change shelf of the book that being updated
     book['shelf'] = newShelf
     // change state
     this.setState((prevState) => {
-      // delete book from the current shelf
-      const oldShelfBooks = prevState.books[oldShelf].filter((b) => (
-        b.id !== bookID
-      ))
-      // add book to the new shelf if new shelf is not None
-      // also update shelf by ID
-      const newBooks = prevState.books;
-      const newShelfByID = prevState.shelfByID;
-      newShelfByID[bookID] = newShelf
-      newBooks[oldShelf] = oldShelfBooks
-      console.log(newBooks)
-      if(newShelf !== 'none'){
-        newBooks[newShelf] = prevState.books[newShelf]
-        newBooks[newShelf].push(book)
-      }
-      return {
-        books: newBooks,
-        shelfByID: newShelfByID
-      }
-    })
+        // delete book from the current shelf
+
+        // add book to the new shelf if new shelf is not None
+        // also update shelf by ID
+        const newBooks = prevState.books;
+        const newShelfByID = prevState.shelfByID;
+        newShelfByID[bookID] = newShelf
+        if (oldShelf !== 'none') {
+          const oldShelfBooks = prevState.books[oldShelf].filter((b) => (
+            b.id !== bookID
+          ))
+          newBooks[oldShelf] = oldShelfBooks
+        }
+        console.log(newBooks)
+        if (newShelf !== 'none') {
+          newBooks[newShelf] = prevState.books[newShelf]
+          newBooks[newShelf].push(book)
+        }
+        return {
+          books: newBooks,
+          shelfByID: newShelfByID
+        }
+      },
+      () => {
+        BooksAPI.update(book, newShelf)
+      })
   }
 
   render() {
@@ -84,7 +92,9 @@ class BooksApp extends React.Component {
       <Router>
         <div className="app">
 
-          <Route path='/search' component={SearchBooks}/>
+          <Route path='/search' render={() => (
+            <SearchBooks updateBook={this.updateBook} shelfByID={this.state.shelfByID}/>
+          )}/>
 
           <Route exact path='/' render={() => (
             <ListBooks books={this.state.books} updateBook={this.updateBook}/>
