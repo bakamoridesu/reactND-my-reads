@@ -18,7 +18,7 @@ class ListBooks extends Component {
           <div>
             {Object.entries(this.categories).map(([shelfSysname, shelfName]) => {
               return (this.props.books[shelfSysname] &&
-                <BookShelf books={this.props.books[shelfSysname]} title={shelfName}/>)
+                <BookShelf key={shelfSysname} books={this.props.books[shelfSysname]} title={shelfName} updateBook={this.props.updateBook}/>)
             })}
           </div>
         </div>

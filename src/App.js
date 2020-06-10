@@ -13,12 +13,15 @@ import {
 
 class BooksApp extends React.Component {
   state = {
+    shelfByID:{},
     books: {}
   }
 
   componentDidMount() {
+    console.log('componentDidMount')
     BooksAPI.getAll().then((res) => {
       const books = {}
+      const shelfByID = {}
       for (const book of res) {
         if (!books[book.shelf]) {
           books[book.shelf] = []
@@ -26,21 +29,46 @@ class BooksApp extends React.Component {
         } else {
           books[book.shelf].push(book)
         }
+        shelfByID[book.id] = book.shelf
       }
       this.setState({
-        books: books
+        books: books,
+        shelfByID: shelfByID
       })
     })
   }
 
+  updateBook = (book, newShelf) => {
+    const bookID = book.id
+    const oldShelf = this.state.shelfByID[bookID]
+    book['shelf'] = newShelf
+    this.setState((prevState) => {
+      const oldShelfBooks = prevState.books[oldShelf].filter((b) => (
+        b.id !== bookID
+      ))
+      const newBooks = prevState.books;
+      const newShelfByID = prevState.shelfByID;
+      newShelfByID[bookID] = newShelf
+      newBooks[oldShelf] = oldShelfBooks
+      console.log(newBooks)
+      if(newShelf !== 'none'){
+        newBooks[newShelf] = prevState.books[newShelf]
+        newBooks[newShelf].push(book)
+      }
+      return {
+        books: newBooks,
+        shelfByID: newShelfByID
+      }
+    })
+  }
+
   render() {
-    console.log(this.state.books);
     return (
       <Router>
         <div className="app">
           <Route path='/search' component={SearchBooks}/>
           <Route exact path='/' render={() => (
-            <ListBooks books={this.state.books}/>
+            <ListBooks books={this.state.books} updateBook={this.updateBook}/>
           )}/>
           <div className="open-search">
             <Link

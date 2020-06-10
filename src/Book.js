@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 
 class Book extends Component {
+  handleSelect = (evt) => {
+    this.props.updateBook(this.props.book, evt.target.value)
+  }
   render() {
-    console.log('book!')
-    console.log(this.props.book)
-    const url = `url(${this.props.book.imageLinks.thumbnail})`;
-    const title = this.props.book.title;
-    const author = String(this.props.book.authors)
-    const id = this.props.book.id
+    const book = this.props.book
+    const url = `url(${book.imageLinks.thumbnail})`;
+    const title = book.title;
+    const author = String(book.authors)
+    const id = book.id
     return (
       <li key={id}>
         <div className="book">
@@ -18,7 +20,7 @@ class Book extends Component {
               backgroundImage: url
             }}></div>
             <div className="book-shelf-changer">
-              <select>
+              <select onChange={this.handleSelect} value={book.shelf}>
                 <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
