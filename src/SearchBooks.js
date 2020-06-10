@@ -9,11 +9,16 @@ class SearchBooks extends Component {
     foundBooks: [],
     searchString: ''
   }
+  // if books not found, update state (set foundBooks to [])
   notFound = () => {
     this.setState({
       foundBooks: []
     })
   }
+  /*
+      updates state (searchString, foundBooks)
+      if books are found, fills shelf for books that have one
+   */
   doSearch = (evt) => {
     this.setState({
       searchString: evt.target.value

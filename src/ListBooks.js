@@ -3,6 +3,8 @@ import BookShelf from "./BookShelf";
 import {Link} from "react-router-dom";
 
 class ListBooks extends Component {
+
+  // maps shelf sysnames to names
   categories = {
     currentlyReading: 'Currently Reading',
     wantToRead: 'Want to Read',

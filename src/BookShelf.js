@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import Book from './Book'
 class BookShelf extends Component {
-    books;
   render() {
-
     const books = this.props.books;
-    const title = this.props.title; //Currently Reading
+    const title = this.props.title;
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{title}</h2>

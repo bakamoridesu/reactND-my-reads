@@ -22,7 +22,6 @@ class BooksApp extends React.Component {
         Updates state (books, shelfByID)
    */
   componentDidMount() {
-    console.log('componentDidMount')
     BooksAPI.getAll().then((res) => {
       const books = {}
       const shelfByID = {}
@@ -72,7 +71,6 @@ class BooksApp extends React.Component {
           ))
           newBooks[oldShelf] = oldShelfBooks
         }
-        console.log(newBooks)
         if (newShelf !== 'none') {
           newBooks[newShelf] = prevState.books[newShelf]
           newBooks[newShelf].push(book)

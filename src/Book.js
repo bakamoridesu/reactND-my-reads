@@ -7,16 +7,20 @@ class Book extends Component {
       shelf: props.book.shelf
     }
   }
+  /*
+      updates state (shelf)
+      updates book on server
+   */
   handleSelect = (evt) => {
     const oldShelf = this.state.shelf
     const newShelf = evt.target.value
-    console.log(newShelf)
     this.setState({
       shelf: newShelf
     })
     this.props.updateBook(this.props.book, newShelf, oldShelf)
   }
   render() {
+    // read all data from props
     const book = this.props.book
     const url = `url(${book.imageLinks.thumbnail})`;
     const title = book.title;
