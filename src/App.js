@@ -57,12 +57,18 @@ class BooksApp extends React.Component {
     }
     // change shelf of the book that being updated
     book['shelf'] = newShelf
+    // saving current state
+    let prevBooks = []
+    let prevShelfByID = {}
     // change state
+
     this.setState((prevState) => {
         // delete book from the current shelf
 
         // add book to the new shelf if new shelf is not None
         // also update shelf by ID
+        prevBooks = prevState.books;
+        prevShelfByID = prevState.shelfByID;
         const newBooks = prevState.books;
         const newShelfByID = prevState.shelfByID;
         newShelfByID[bookID] = newShelf
@@ -83,6 +89,12 @@ class BooksApp extends React.Component {
       },
       () => {
         BooksAPI.update(book, newShelf)
+          .catch(()=> {
+            this.setState({
+              books: prevBooks,
+              shelfByID: prevShelfByID
+            })
+          })
       })
   }
 
