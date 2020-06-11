@@ -5,7 +5,7 @@ import * as BooksAPI from './BooksAPI';
 import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
 import {
-  Route,
+  Route, Switch,
   BrowserRouter as Router
 
 } from 'react-router-dom'
@@ -89,15 +89,14 @@ class BooksApp extends React.Component {
     return (
       <Router>
         <div className="app">
-
-          <Route path='/search' render={() => (
-            <SearchBooks updateBook={this.updateBook} shelfByID={this.state.shelfByID}/>
-          )}/>
-
-          <Route exact path='/' render={() => (
-            <ListBooks books={this.state.books} updateBook={this.updateBook}/>
-          )}/>
-
+          <Switch>
+            <Route path='/search' render={() => (
+              <SearchBooks updateBook={this.updateBook} shelfByID={this.state.shelfByID}/>
+            )}/>
+            <Route exact path='/' render={() => (
+              <ListBooks books={this.state.books} updateBook={this.updateBook}/>
+            )}/>
+          </Switch>
         </div>
       </Router>
     )

@@ -3,6 +3,14 @@ import React, {Component} from 'react';
 class Book extends Component {
   constructor(props){
     super(props);
+    const book = this.props.book
+    this.url = book.imageLinks?
+      (book.imageLinks.thumbnail? `url(${book.imageLinks.thumbnail})` :
+        (book.imageLinks.sthumbnail? `url(${book.imageLinks.sthumbnail})` : '')) :
+      "url('/images/no_cover.png')";
+    this.title = book.title;
+    this.author = String(book.authors)
+    this.id = book.id
     this.state = {
       shelf: props.book.shelf
     }
@@ -21,19 +29,15 @@ class Book extends Component {
   }
   render() {
     // read all data from props
-    const book = this.props.book
-    const url = `url(${book.imageLinks.thumbnail})`;
-    const title = book.title;
-    const author = String(book.authors)
-    const id = book.id
+
     return (
-      <li key={id}>
+      <li key={this.id}>
         <div className="book">
           <div className="book-top">
             <div className="book-cover" style={{
               width: 128,
               height: 193,
-              backgroundImage: url
+              backgroundImage: this.url
             }}></div>
             <div className="book-shelf-changer">
               <select onChange={this.handleSelect} value={this.state.shelf}>
@@ -45,8 +49,8 @@ class Book extends Component {
               </select>
             </div>
           </div>
-          <div className="book-title">{title}</div>
-          <div className="book-authors">{author}</div>
+          <div className="book-title">{this.title}</div>
+          <div className="book-authors">{this.author}</div>
         </div>
       </li>
     )
