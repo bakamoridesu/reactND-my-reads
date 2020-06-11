@@ -1,8 +1,28 @@
 # MyReads Project
 
+## Description
+This is a reading organizer that allows to sort book into 3 shelfs: 
+- Currently Reading
+- Want to read
+- Read
 
+## Usage 
+To add a new book from server, press '+' button in the bottom-right corner. The search window will pop up:
 
-## TL;DR
+![search window](images/search_screen.png)
+
+To read a brief description, hover the mouse cursor on the book cover
+
+![description](images/description.png)
+
+To add the book on a shelf or remove from organizer, use the green arrow button:
+
+![change shelf](images/change_shelf.png)
+
+To read a book or open the book's page on google.books double-click on the image cover:
+
+![google books](images/google_books.png)
+## Running the app
 
 To run the project:
 
