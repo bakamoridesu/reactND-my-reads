@@ -7,7 +7,7 @@ body {
 }
 
 body, .app {
-  background: white;
+  background: #fceec5;
 }
 
 /* main page */
@@ -190,6 +190,25 @@ button:active {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   background: #eee;
   background-position:center;
+}
+
+.book-cover span {
+	display			: none;
+	padding			: 2px 3px;
+	margin-left		: 150px;
+	width			: 500px;
+  position		: absolute;
+  z-index:1;
+
+}
+
+.book-cover:hover span {
+	display			: inline;
+	position		: absolute;
+	background		: #ffdfd3;
+	border			: 1px solid #cccccc;
+	color			: #6c6c6c;
+  z-index:1;
 }
 
 .book-cover-title {
