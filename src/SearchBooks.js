@@ -20,27 +20,29 @@ class SearchBooks extends Component {
       if books are found, fills shelf for books that have one
    */
   doSearch = (evt) => {
+    const query = evt.target.value
     this.setState({
-      searchString: evt.target.value
+      searchString: query
     })
-    BooksAPI.search(evt.target.value.trim()).then((res) => {
-      if (res) {
-        if (!res['error']) {
-          const foundBooks = []
-          for (const book of res) {
-            book['shelf'] = this.props.shelfByID[book.id] ? this.props.shelfByID[book.id] : 'none'
-            foundBooks.push(book)
+    if(query.trim() !== '') {
+      BooksAPI.search(query.trim()).then((res) => {
+        if (res) {
+          if (!res['error']) {
+            const foundBooks = res.map((book) => {
+              book['shelf'] = this.props.shelfByID[book.id] ? this.props.shelfByID[book.id] : 'none';
+              return book
+            })
+            this.setState({
+              foundBooks: foundBooks
+            })
+          } else {
+            this.notFound()
           }
-          this.setState({
-            foundBooks: foundBooks
-          })
         } else {
           this.notFound()
         }
-      } else {
-        this.notFound()
-      }
-    })
+      })
+    }
   }
 
   render() {
